@@ -27,11 +27,7 @@ Tensorflow Image analysis has four distinct components:
 
 # Install
 
-A prerequisite is a working camera installed and seen as device '0'. Test this with the platform's camera app before proceeding.
-
 This example depends on [Camera4Kivy](https://github.com/Android-for-Python/Camera4Kivy#camera4kivy). Depending on the platform you may need to install a [camera provider](https://github.com/Android-for-Python/Camera4Kivy#dependencies). 
-
-Assuming you have installed a camera provider (if necessary):
 
 ## Windows, MacOS x86_64, Linux
 `pip3 install numpy opencv-python camera4kivy`
@@ -41,10 +37,6 @@ The currently available version of tflite-runtime maybe different to the one use
 `pip3 install --index-url https://google-coral.github.io/py-repo/  tflite-runtime==2.5.0.post1`
 
 If you use a [Coral Accelerator](https://coral.ai/products/accelerator) set `enable_edgetpu = True` in `classifyobject.py`.
-
-# Other Stuff
-
-On a desktop the example assumes a builtin camera facing the user, so the Preview is mirrored. If you want to point a freely mounted camera you may want to set the [Camera4Kivy mirror option False]((https://github.com/Android-for-Python/Camera4Kivy/#mirror)). 
 
 
 
