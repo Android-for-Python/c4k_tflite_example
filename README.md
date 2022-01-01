@@ -17,11 +17,11 @@ As of 2021/12/13 the Python `tflite_runtime.whl` is not available for any of the
 
 Tensorflow Image analysis has four distinct components:
 
-- The tensorflow lite model, formated to include tensor labels.
+- The tensorflow lite model, formated to include tensor labels. Created for example with [Model Maker](https://www.tensorflow.org/lite/guide/model_maker) and [here](https://www.tensorflow.org/lite/api_docs/python/tflite_model_maker).
 
 - The Python tflite-runtime package. This performs inference based on the model and the input image. This package is available from Google on most desktops.
 
-- The model interface, specific to the tflite model [object_detection/object_detector.py](https://github.com/Android-for-Python/c4k_tflite_example/blob/main/object_detection/object_detector.py). This encodes the model input, executes the runtime, and decodes the output.
+- The model interface, specific to the tflite model in this case [object_detection/object_detector.py](https://github.com/Android-for-Python/c4k_tflite_example/blob/main/object_detection/object_detector.py). This encodes the model input, executes the runtime, and decodes the output.
 
 - The Camera4Kivy interface [classifyobject.py](https://github.com/Android-for-Python/c4k_tflite_example/blob/main/classifyobject.py). This passes the image to the model interface, and annotates the output to the Preview.
 
