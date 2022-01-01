@@ -11,7 +11,11 @@ Available on some of the [usual platforms](https://github.com/Android-for-Python
 
 This example is based on a [Tensorflow Lite Object Detection Example](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi). This example was trained on the [COCO dataset](https://cocodataset.org/#home).
 
+This example was chosen because it was trained on a large dataset and thus slow to infer objects. Annotation frame rates can be of the order of 1 fps, video frame rates are normal.   
+
 As of 2021/12/13 the Python `tflite_runtime.whl` is not available for any of these: Python 3.10, MacOS on M1, MacOS Monterey, iOS, x86_32, or Android. **If you use any of these, stop now**. If you have a problem with this talk to Google.
+
+A recipe for Android is a work in progress. If/when it is done I will share, so don't waste either of our time by asking.
 
 # Image Analysis Architecture
 
