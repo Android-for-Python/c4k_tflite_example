@@ -11,7 +11,7 @@ Available on some of the [usual platforms](https://github.com/Android-for-Python
 
 This example is based on a [Tensorflow Lite Object Detection Example](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi). This example was trained on the [COCO dataset](https://cocodataset.org/#home).
 
-This example was chosen because it was trained on a large dataset and thus slow to infer objects. On newish Intel based machines annotation frame rates can be of the order of 1 fps with additional latency for first recognition, video frame rates are normal. This is usable, however on a 4 year old Windows i3 machine the annotation rate is 1/10 fps, this is too slow to be useful. Don't waste your time trying a slower machine.
+This example was chosen because it was trained on a large dataset and thus slow to infer objects. On newish Intel based machines annotation frame rates can be of the order of a few fps with additional latency for first recognition, video frame rates are normal. Windows machines were about 3x slower than Linux based machines, on a 4 year old Windows i3 machine the annotation rate is 1/10 fps. 
 
 If you want better performace consider a [Coral Accelerator](https://coral.ai/products/accelerator). This gave me very approximately an order of magnitude speed improvement.
 
