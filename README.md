@@ -40,7 +40,7 @@ This example depends on [Camera4Kivy](https://github.com/Android-for-Python/Came
 
 The currently available version of tflite-runtime maybe different to the one used on the next line.
 
-`pip3 install --index-url https://google-coral.github.io/py-repo/  tflite-runtime==2.5.0.post1`
+`pip3 install --index-url https://google-coral.github.io/py-repo/tflite-runtime==2.5.0.post1`
 
 If you use a [Coral Accelerator](https://coral.ai/products/accelerator) set `enable_edgetpu = True` in `classifyobject.py`.
 
