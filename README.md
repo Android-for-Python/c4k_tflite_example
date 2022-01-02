@@ -17,7 +17,7 @@ If you want better performace consider a [Coral Accelerator](https://coral.ai/pr
 
 As of 2021/12/13 the Python `tflite_runtime.whl` is not available for any of these: Python 3.10, MacOS on M1, MacOS Monterey, iOS, x86_32, or Android. **If you use any of these, stop now**. If you have a problem with this talk to Google.
 
-A recipe for `tflite-runtime` on Android is a work in progress for me. If/when it is done I will share, so don't waste either of our time by asking if I could just.....
+A recipe for `tflite-runtime` on Android is on my TODO list.
 
 # Image Analysis Architecture
 
