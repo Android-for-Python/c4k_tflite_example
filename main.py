@@ -46,7 +46,7 @@ class MyApp(App):
         else:
             permission = True
         if permission:
-            self.layout.detect.connect_camera(analyze_resolution = 320,
+            self.layout.detect.connect_camera(analyze_pixels_resolution = 320,
                                               enable_analyze_pixels = True)
 
     def on_start(self):
