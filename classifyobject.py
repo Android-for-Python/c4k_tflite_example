@@ -62,9 +62,9 @@ class ClassifyObject(Preview):
             h = detection.bounding_box.bottom - y
 
             # Map tflite style coordinates to Kivy Preview coordinates
-            y = image_size[1] -y -h
+            y = max(image_size[1] -y -h, 0)
             if mirror:
-                x = image_size[0] -x -w
+                x = max(image_size[0] -x -w, 0)
                 
             # Map Analysis Image coordinates to Preview coordinates
             x = round(x * image_scale + image_pos[0])
