@@ -95,9 +95,6 @@ class ClassifyObject(Preview):
     ################################
         
     def canvas_instructions_callback(self, texture, size, pos):
-        # Add the preview image 
-        Color(1,1,1,1)
-        Rectangle(texture= texture, size = size, pos = pos)
         # Add the analysis annotations
         Color(0,1,0,1)
         for r in self.classified:
@@ -108,19 +105,3 @@ class ClassifyObject(Preview):
                       pos = [r['x'] + dp(10), r['y'] + dp(10)],
                       texture = r['t'])       
 
-    '''
-    # https://stackoverflow.com/questions/50331463/convert-rgba-to-rgb-in-python
-    def rgba2rgb( rgba, background=(255,255,255) ):
-        row, col, ch = rgba.shape
-        if ch == 3:
-            return rgba
-        assert ch == 4, 'RGBA image has 4 channels.'
-        rgb = np.zeros( (row, col, 3), dtype='float32' )
-        r, g, b, a = rgba[:,:,0], rgba[:,:,1], rgba[:,:,2], rgba[:,:,3]
-        a = np.asarray( a, dtype='float32' ) / 255.0
-        R, G, B = background
-        rgb[:,:,0] = r * a + (1.0 - a) * R
-        rgb[:,:,1] = g * a + (1.0 - a) * G
-        rgb[:,:,2] = b * a + (1.0 - a) * B
-        return np.asarray( rgb, dtype='uint8' )
-    '''
