@@ -94,7 +94,7 @@ class ClassifyObject(Preview):
     # Canvas Update  - on UI Thread
     ################################
         
-    def canvas_instructions_callback(self, texture, size, pos):
+    def canvas_instructions_callback(self, texture, tex_size, tex_pos):
         # Add the analysis annotations
         Color(0,1,0,1)
         for r in self.classified:
