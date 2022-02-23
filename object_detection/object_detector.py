@@ -17,7 +17,7 @@ import platform
 from typing import List, NamedTuple
 import zipfile
 
-import cv2
+#import cv2 ## replace cv2 ##
 import numpy as np
 
 # pylint: disable=g-import-not-at-top
@@ -172,7 +172,8 @@ class ObjectDetector:
     self._interpreter = interpreter
     self._options = options
 
-  def detect(self, input_image: np.ndarray) -> List[Detection]:
+  def detect(self, input_image: np.ndarray, image_size) -> List[Detection]:
+    ## replace cv2 - add image_size ##
     """Run detection on an input image.
 
     Args:
@@ -183,7 +184,8 @@ class ObjectDetector:
     Returns:
         A Person instance.
     """
-    image_height, image_width, _ = input_image.shape
+    #image_height, image_width, _ = input_image.shape
+    image_width, image_height = image_size
 
     input_tensor = self._preprocess(input_image)
 
@@ -203,7 +205,8 @@ class ObjectDetector:
     """Preprocess the input image as required by the TFLite model."""
 
     # Resize the input
-    input_tensor = cv2.resize(input_image, self._input_size)
+    #input_tensor = cv2.resize(input_image, self._input_size) ## replace cv2 ##
+    input_tensor = input_image
 
     # Normalize the input if it's a float model (aka. not quantized)
     if not self._is_quantized_input:

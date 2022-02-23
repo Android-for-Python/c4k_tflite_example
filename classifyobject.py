@@ -1,7 +1,8 @@
 # This example demonstrates Object Detection using Tensorflow Lite
 # It is based on:
 # https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection
-#
+# cv2 references have been replaced with Pillow
+
 import time
 from kivy.clock import mainthread
 from kivy.graphics import Color, Line, Rectangle
@@ -12,9 +13,7 @@ import numpy as np
 from camera4kivy import Preview
 from object_detection.object_detector import ObjectDetector
 from object_detection.object_detector import ObjectDetectorOptions
-
-import cv2
-
+from PIL import Image
 
 class ClassifyObject(Preview):
     
@@ -31,10 +30,11 @@ class ClassifyObject(Preview):
             model = 'object_detection/efficientdet_lite0.tflite'
         options = ObjectDetectorOptions(
             num_threads = 4,
-            score_threshold = 0.45,
+            score_threshold = 0.5,
             max_results = 3,
             enable_edgetpu = enable_edgetpu)
         self.detector = ObjectDetector(model_path=model, options=options)
+        self.input_size = self.detector._input_size
         self.start_time = time.time()
 
     ####################################
@@ -44,10 +44,13 @@ class ClassifyObject(Preview):
     def analyze_pixels_callback(self, pixels, image_size, image_pos,
                                 image_scale, mirror):
 
-        rgba = np.fromstring(pixels, np.uint8).reshape(image_size[1],
-                                                       image_size[0], 4)
-        image = cv2.cvtColor(rgba, cv2.COLOR_RGBA2RGB)
-        detections = self.detector.detect(image)
+        # Format pixels for detector
+        im = Image.frombytes(mode='RGBA', size=image_size, data= pixels)
+        im = im.resize(self.input_size)
+        image = np.array(im)[:,:,:3]
+
+        # detect
+        detections = self.detector.detect(image, image_size)
         now = time.time()
         fps = 0
         if now - self.start_time:
