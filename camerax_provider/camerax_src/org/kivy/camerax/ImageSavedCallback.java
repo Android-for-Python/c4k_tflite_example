@@ -43,8 +43,8 @@ public class ImageSavedCallback implements OnImageSavedCallback {
     }
 	
     public void onError(ImageCaptureException exception) {
-	int id = exception.getImageCaptureError();
-	String msg = "ERROR: Android CameraX ImageCaptureException:" + id;
+	//int id = exception.getImageCaptureError();
+	String msg = "Image Capture terminated by early camera disconnect.";
 	this.callback_wrapper.callback_string(msg); 
     }
 }

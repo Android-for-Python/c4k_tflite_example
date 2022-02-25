@@ -72,8 +72,11 @@ class CameraX {
     private Size resolution;
     private int rotation;
 
-    // Run time State                 
-    private Executor executor = Executors.newSingleThreadExecutor();
+    // Persistent run time State
+    // executor may persist after disconnect for capture to complete
+    public static Executor executor = Executors.newSingleThreadExecutor();
+
+    // Run time State
     private UseCaseGroup useCaseGroup = null;
     private Preview preview = null;
     private ProcessCameraProvider cameraProvider = null;
@@ -445,10 +448,9 @@ class CameraX {
                 vcf = new VideoCapture.OutputFileOptions.Builder(cr,
 								 collection,
 								 cv).build();
-		VideoSavedCallback vsc =
-		    new VideoSavedCallback(this.callbackClass);
-		this.videoCapture.startRecording(vcf,executor,vsc);
 	    }
+	    VideoSavedCallback vsc = new VideoSavedCallback(this.callbackClass);
+	    this.videoCapture.startRecording(vcf,executor,vsc);
 	}
     }
 

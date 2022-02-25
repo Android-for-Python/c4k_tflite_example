@@ -42,6 +42,7 @@ public class VideoSavedCallback implements OnVideoSavedCallback {
     }
 	
     public void onError(int videoCaptureError, String message, Throwable cause){
-	this.callback_wrapper.callback_string("ERROR:" + message); 
+	String msg = "Video Capture terminated by early camera disconnect.";
+	this.callback_wrapper.callback_string(msg); 
     }
 }
