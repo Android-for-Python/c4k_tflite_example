@@ -30,7 +30,7 @@ These are annotation update rates, for Camera4Kivy background image frame update
 
 As of 2021/12/13 Google's `tflite_runtime.whl` (version 2.5.0.post1) is not available for any of these: Python 3.10, MacOS on M1, MacOS Monterey, iOS, or x86_32. **If you use any of these, stop now**. If you have a problem with this talk to Google.
 
-A recipe for `tflite-runtime` on Android is included in this example, it uses tflite-runtime 2.8.0, and runs on arm7 and arm8 devices and x86 emulator.
+A recipe for `tflite-runtime` on Android is included in this example, it uses tflite-runtime 2.8.0, and runs on arm7 and arm8 devices and the x86 (but not x86_64) emulator.
 
 # Image Analysis Architecture
 
@@ -47,7 +47,7 @@ Tensorflow Image analysis has four distinct components:
 # tflite-runtime Documentation
 
 [Python API](https://www.tensorflow.org/lite/api_docs/python/tf/lite), 
-[Python quickstart](https://www.tensorflow.org/lite/guide/python),
+[Python quickstart](https://www.tensorflow.org/lite/guide/python), and 
 [21 Python examples](https://github.com/tensorflow/examples/tree/master/lite/examples).
 
 # Install
@@ -80,6 +80,6 @@ p4a.local_recipes = p4a-recipes
 p4a.hook = camerax_provider/gradle_options.py
 ```
 
-Note armeab-v7a: Some very old devices armeab-v7a may not have NEON instructions and will not work. Set `android.minapi = 23` to exclude these devices (and some devices that do have NEON instructions as well).
+Note armeab-v7a: Some very old armeab-v7a devices may not have NEON instructions and will not work (the failure mechanism, if any, is unknown). Set `android.minapi = 23` to exclude these devices (and some devices that do have NEON instructions as well).
 
 Note x86_84: Build fails.
