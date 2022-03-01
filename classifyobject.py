@@ -1,7 +1,9 @@
 # This example demonstrates Object Detection using Tensorflow Lite
 # It is based on:
 # https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection
-# cv2 references have been replaced with Pillow
+#
+# cv2 references this file and object_detection/object_detector.py from
+# example above replaced with 'self.auto_analyze_resolution'
 
 import time
 from kivy.clock import mainthread
@@ -13,7 +15,6 @@ import numpy as np
 from camera4kivy import Preview
 from object_detection.object_detector import ObjectDetector
 from object_detection.object_detector import ObjectDetectorOptions
-from PIL import Image
 
 class ClassifyObject(Preview):
     
@@ -34,7 +35,9 @@ class ClassifyObject(Preview):
             max_results = 3,
             enable_edgetpu = enable_edgetpu)
         self.detector = ObjectDetector(model_path=model, options=options)
-        self.input_size = self.detector._input_size
+        # Get the required analyze resolution from the detector, a 2 ele list.
+        # as a concequence, scale will be a 2 ele list
+        self.auto_analyze_resolution = self.detector._input_size
         self.start_time = time.time()
 
     ####################################
@@ -43,14 +46,12 @@ class ClassifyObject(Preview):
 
     def analyze_pixels_callback(self, pixels, image_size, image_pos,
                                 image_scale, mirror):
-
-        # Format pixels for detector
-        im = Image.frombytes(mode='RGBA', size=image_size, data= pixels)
-        im = im.resize(self.input_size)
-        image = np.array(im)[:,:,:3]
-
+        # Convert pixels to numpy rgb
+        rgba = np.fromstring(pixels, np.uint8).reshape(image_size[1],
+                                                       image_size[0], 4)
+        rgb = rgba[:,:,:3]
         # detect
-        detections = self.detector.detect(image, image_size)
+        detections = self.detector.detect(rgb)
         now = time.time()
         fps = 0
         if now - self.start_time:
@@ -70,10 +71,11 @@ class ClassifyObject(Preview):
                 x = max(image_size[0] -x -w, 0)
                 
             # Map Analysis Image coordinates to Preview coordinates
-            x = round(x * image_scale + image_pos[0])
-            y = round(y * image_scale + image_pos[1])
-            w = round(w * image_scale)
-            h = round(h * image_scale)
+            # image_scale is a list because we used self.auto_analyze_resolution
+            x = round(x * image_scale[0] + image_pos[0])
+            y = round(y * image_scale[1] + image_pos[1])
+            w = round(w * image_scale[0])
+            h = round(h * image_scale[1])
 
             # Category text for canvas
             category = detection.categories[0]

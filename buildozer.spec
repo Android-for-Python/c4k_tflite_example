@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,camera4kivy,gestures4kivy,pillow,numpy,tflite-runtime
+requirements = python3,kivy,camera4kivy,gestures4kivy,numpy,tflite-runtime
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes

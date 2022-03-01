@@ -1,22 +1,22 @@
 from pythonforandroid.recipe import PythonRecipe, current_directory,\
     shprint, info_main
-from pythonforandroid.logger import error 
+from pythonforandroid.logger import error
 from os.path import join
 import sh
 
 class TFLiteRuntimeRecipe(PythonRecipe):
     
     ###############################################################
-    # Refs:
+    #
+    # tflite-runtime README:
+    # https://github.com/Android-for-Python/c4k_tflite_example/blob/main/README.md
+    #
+    # Recipe build references:
     # https://developer.android.com/ndk/guides/cmake
     # https://developer.android.com/ndk/guides/cpu-arm-neon#cmake
     # https://www.tensorflow.org/lite/guide/build_cmake
     # https://www.tensorflow.org/lite/guide/build_cmake_arm
     #
-    # For armeabi-v7a set android.minapi = 23
-    # This filters older arm7 devices, as some do not support NEON.
-    # On arrm7 without NEON tf will be unusably slow
-    # 
     # Tested using cmake 3.16.3 probably requires cmake >= 3.13
     ###############################################################
 
@@ -28,10 +28,6 @@ class TFLiteRuntimeRecipe(PythonRecipe):
     call_hostpython_via_targetpython = False
 
     def build_arch(self, arch):
-        if arch.arch == 'armeabi-v7a' and self.ctx.ndk_api < 23:
-            error('For armeabi-v7a, android.minapi must be >= 23')
-            exit(1)
-        
         env = self.get_recipe_env(arch)
         
         # Directories
@@ -39,7 +35,7 @@ class TFLiteRuntimeRecipe(PythonRecipe):
         script_dir = join(root_dir,
                           'tensorflow', 'lite', 'tools', 'pip_package')
         build_dir = join(script_dir, 'gen', 'tflite_pip', 'python3')
-        
+
         # Includes
         python_include_dir = self.ctx.python_recipe.include_root(arch.arch)
         pybind11_recipe = self.get_recipe('pybind11', self.ctx)
@@ -53,7 +49,7 @@ class TFLiteRuntimeRecipe(PythonRecipe):
         # Scripts
         build_script = join(script_dir, 'build_pip_package_with_cmake.sh')
         toolchain = join(self.ctx.ndk_dir,
-                         'build','cmake','android.toolchain.cmake')
+                         'build', 'cmake', 'android.toolchain.cmake')
 
         # Build
         ########
@@ -63,10 +59,10 @@ class TFLiteRuntimeRecipe(PythonRecipe):
                 'CMAKE_TOOLCHAIN_FILE' : toolchain,
                 'ANDROID_PLATFORM' : str(self.ctx.ndk_api),
                 'ANDROID_ABI' : arch.arch,
-                'WRAPPER_INCLUDES' : includes, 
+                'WRAPPER_INCLUDES' : includes,
                 'CMAKE_SHARED_LINKER_FLAGS' : env['LDFLAGS'],
             })
-            
+
             try:
                 info_main('tflite-runtime is building...')
                 info_main('Expect this to take at least 5 minutes...')

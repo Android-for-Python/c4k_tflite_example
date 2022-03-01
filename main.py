@@ -36,7 +36,8 @@ class MyApp(App):
         self.started = False
         if platform == 'android':
             Window.bind(on_resize=hide_landscape_status_bar)
-            request_permissions([Permission.CAMERA])
+            request_permissions([Permission.CAMERA], self.connect_camera)
+
         self.layout = AppLayout()
         return self.layout
 
@@ -46,8 +47,7 @@ class MyApp(App):
         else:
             permission = True
         if permission:
-            self.layout.detect.connect_camera(analyze_pixels_resolution = 640,
-                                              enable_analyze_pixels = True)
+            self.layout.detect.connect_camera(enable_analyze_pixels = True)
 
     def on_start(self):
         Clock.schedule_once(self.connect_camera)
