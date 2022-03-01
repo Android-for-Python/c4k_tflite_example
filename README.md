@@ -11,6 +11,8 @@ Available on some of the [usual platforms](https://github.com/Android-for-Python
 
 This example is based on a [Tensorflow Lite Object Detection Example](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi). This example was trained on the [COCO dataset](https://cocodataset.org/#home) which contains 1000 objects commonly found in American houses. For example chair, person, cup, etc. It exhibits false positives, a picture on the wall is classified as a TV.
 
+![Example](example.jpg) 
+
 The original Google example depends on numpy and opencv. This derived example removes the `opencv.resize` usage, and uses `self.auto_analyze_resolution` to set the resolution required by the example. This was done to decrease apk size (no opencv) and increase performance on faster devices. 
 
 This Google example was chosen because it was trained on a complex dataset and thus slow to infer objects, and so is a test of any performance limitations. Detection update rates and detection confidence vary by platform, because platforms use different delegates. The NNAPI delegate, available on Android >= 11 seems to be the best.
