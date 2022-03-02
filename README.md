@@ -15,7 +15,7 @@ This example is based on a [Tensorflow Lite Object Detection Example](https://gi
 
 The original Google example depends on numpy and opencv. This derived example removes the `opencv.resize` usage, and uses `self.auto_analyze_resolution` to set the resolution required by the example. This was done to decrease apk size (no opencv) and increase performance on faster devices. 
 
-This Google example was chosen because it was trained on a complex dataset and thus slow to infer objects, and so is a test of any performance limitations. Detection update rates and detection confidence vary by platform, because platforms use different delegates. The NNAPI delegate, available on Android >= 11 seems to be the best.
+This Google example was chosen because it was trained on a complex dataset and thus slow to infer objects, and so is a test of any performance limitations. Detection update rates and detection confidence vary by platform, because platforms use different delegates. The NNAPI delegate, available on Android >= 11 seems to be the fastest.
 
 For this example platform performance is approximately:
 
@@ -28,7 +28,7 @@ For this example platform performance is approximately:
 | Windows + Coral | 2.5.0.post1 | 7 |
 | Pixel5 Android 12 arm8 | 2.8.0 | 25 |
 
-These are annotation update rates, for Camera4Kivy background image frame update rates are mostly independent of this. Surprisingly single digit annoatation rates provide acceptable behavior, this is because of the stochastic nature of detection.
+These are annotation update rates, for Camera4Kivy background image frame update rates are mostly independent of this. Surprisingly single digit annoatation rates provide acceptable behavior, this is because of the stochastic nature of detection. Conversly a high update rate appears too fast, tuning might be required.
 
 As of 2021/12/13 Google's `tflite_runtime.whl` (version 2.5.0.post1) is not available for any of these: Python 3.10, MacOS on M1, MacOS Monterey, iOS, or x86_32. **If you use any of these, stop now**. If you have a problem with this talk to Google.
 
