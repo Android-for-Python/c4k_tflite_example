@@ -32,19 +32,19 @@ These are annotation update rates, for Camera4Kivy background image frame update
 
 As of 2021/12/13 Google's `tflite_runtime.whl` (version 2.5.0.post1) is not available for any of these: Python 3.10, MacOS on M1, MacOS Monterey, iOS, or x86_32. **If you use any of these, stop now**. If you have a problem with this talk to Google.
 
-A recipe for `tflite-runtime` on Android is included in this example, it uses tflite-runtime 2.8.0, and runs on arm7 and arm8 devices and the x86 (but not x86_64) emulator.
+The example uses the recipe for `tflite-runtime` included in the 'develop' version of p4a. This uses tflite-runtime 2.8.0, and runs on arm7 and arm8 devices and the x86 (but not x86_64) emulator.
 
 # Image Analysis Architecture
 
 Tensorflow Image analysis has four distinct components:
 
-- The tensorflow lite model, formated to include tensor labels. Created for example with [Model Maker](https://www.tensorflow.org/lite/guide/model_maker) and also [here](https://www.tensorflow.org/lite/api_docs/python/tflite_model_maker).
+- The tensorflow lite model, formated to include tensor labels. Created for example with [Model Maker](https://www.tensorflow.org/lite/guide/model_maker) and also [here](https://www.tensorflow.org/lite/api_docs/python/tflite_model_maker). A model is created using a training data set.
 
-- The Python `tflite-runtime` package. This performs inference based on the model and the input image. This package is available from Google on most desktops, and using the p4a recipe on Android.
+- The Python `tflite-runtime` package. This performs inference based on the model and the input image. This package is available from Google on most desktops, and provided by a Python-for-Android recipe on Android.
 
-- The model interface, specific to the tflite model, in this case [`object_detection/object_detector.py`](https://github.com/Android-for-Python/c4k_tflite_example/blob/main/object_detection/object_detector.py). This encodes the model input, executes the runtime, and decodes the output.
+- The model interface, specific to the tflite model, in this case [`object_detection/object_detector.py`](https://github.com/Android-for-Python/c4k_tflite_example/blob/main/object_detection/object_detector.py). This encodes the model input for tflite runtime, executes the tflite runtime on one frame, and decodes the tflite runtime output.
 
-- The Camera4Kivy interface [classifyobject.py](https://github.com/Android-for-Python/c4k_tflite_example/blob/main/classifyobject.py). This passes the image to the model interface, and annotates the output to the Preview widget.
+- The Camera4Kivy interface [classifyobject.py](https://github.com/Android-for-Python/c4k_tflite_example/blob/main/classifyobject.py). This passes the video frame to the model interface, and annotates the model interface output onto the Preview widget canvas.
 
 # tflite-runtime Documentation
 
@@ -67,7 +67,7 @@ If you use a [Coral Accelerator](https://coral.ai/products/accelerator) set `ena
 
 ## Android
 
-The example includes a `tflite-runtime` recipe, a `buildozer.spec`, and `camerax_provider`. 
+The example includes a `buildozer.spec`, and `camerax_provider`. Python-for-Android includes a tflite-runtime recipe.
 
 The buildozer.spec has these characteristics:
 
@@ -78,7 +78,6 @@ requirements = python3,kivy,camera4kivy,gestures4kivy,numpy,tflite-runtime
 android.api = 31
 android.arch = arm64-v8a
 p4a.branch = develop
-p4a.local_recipes = p4a-recipes
 p4a.hook = camerax_provider/gradle_options.py
 ```
 
