@@ -84,4 +84,4 @@ p4a.hook = camerax_provider/gradle_options.py
 
 Note armeab-v7a: Some very old armeab-v7a devices may not have NEON instructions and will not work (the failure mechanism, if any, is unknown). Set `android.minapi = 23` to exclude these devices (and some devices that do have NEON instructions as well).
 
-Note x86_84: Build fails.
+Note x86_84: This recipe does not build for x86_64, for an emulator use x86. Using x86_64 will result in one of these app run time error messages: "ModuleNotFoundError: No module named 'tensorflow'", or "ModuleNotFoundError: No module named 'tflite_runtime'. 
