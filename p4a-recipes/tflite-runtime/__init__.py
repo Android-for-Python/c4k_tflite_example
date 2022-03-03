@@ -1,5 +1,5 @@
 from pythonforandroid.recipe import PythonRecipe, current_directory,\
-    shprint, info_main
+    shprint, info_main, warning
 from pythonforandroid.logger import error
 from os.path import join
 import sh
@@ -18,6 +18,9 @@ class TFLiteRuntimeRecipe(PythonRecipe):
     # https://www.tensorflow.org/lite/guide/build_cmake_arm
     #
     # Tested using cmake 3.16.3 probably requires cmake >= 3.13
+    #
+    # THIS RECIPE DOES NOT BUILD x86_64, USE X86 FOR AN EMULATOR
+    #
     ###############################################################
 
     version = '2.8.0'
@@ -28,6 +31,14 @@ class TFLiteRuntimeRecipe(PythonRecipe):
     call_hostpython_via_targetpython = False
 
     def build_arch(self, arch):
+        if arch.arch == 'x86_64':
+            warning("******** tflite-runtime x86_64 will not be built *******")
+            warning("Expect one of these app run time error messages:")
+            warning("ModuleNotFoundError: No module named 'tensorflow'")
+            warning("ModuleNotFoundError: No module named 'tflite_runtime'")
+            warning("Use x86 not x86_64")
+            return
+        
         env = self.get_recipe_env(arch)
         
         # Directories
