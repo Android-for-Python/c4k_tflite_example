@@ -67,6 +67,10 @@ If you use a [Coral Accelerator](https://coral.ai/products/accelerator) set `ena
 
 ## Android
 
+Camera4Kivy depends on Buildozer 1.3.0 or later
+
+`pip3 install buildozer`
+
 The example includes a `buildozer.spec`, and `camerax_provider`. Python-for-Android includes a tflite-runtime recipe.
 
 The buildozer.spec has these characteristics:
