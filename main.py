@@ -25,7 +25,7 @@ if platform == 'android':
             # Show status bar 
             option = View.SYSTEM_UI_FLAG_VISIBLE
         mActivity.getWindow().getDecorView().setSystemUiVisibility(option)
-else:
+elif platform != 'ios':    
     # Dispose of that nasty red dot, required for gestures4kivy.
     from kivy.config import Config 
     Config.set('input', 'mouse', 'mouse, disable_multitouch')
