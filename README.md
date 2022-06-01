@@ -32,7 +32,7 @@ These are annotation update rates, for Camera4Kivy background image frame update
 
 As of 2021/12/13 Google's `tflite_runtime.whl` (version 2.5.0.post1) is not available for any of these: Python 3.10, MacOS on M1, MacOS Monterey, iOS, or x86_32. **If you use any of these, stop now**. If you have a problem with this talk to Google.
 
-The example uses the recipe for `tflite-runtime` included in the 'develop' version of p4a. This uses tflite-runtime 2.8.0, and runs on arm7 and arm8 devices and the x86 (but not x86_64) emulator.
+The example uses the recipe for `tflite-runtime` included in p4a. This uses tflite-runtime 2.8.0, and runs on arm7 and arm8 devices and the x86 (but not x86_64) emulator.
 
 # Image Analysis Architecture
 
@@ -79,9 +79,8 @@ The buildozer.spec has these characteristics:
 source.include_exts = ...,tflite
 source.exclude_patterns = object_detection/efficient*.tflite
 requirements = python3,kivy,camera4kivy,gestures4kivy,numpy,tflite-runtime
-android.api = 31
+android.api = 32
 android.arch = arm64-v8a
-p4a.branch = develop
 p4a.hook = camerax_provider/gradle_options.py
 ```
 
