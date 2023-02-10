@@ -93,7 +93,11 @@ class ClassifyObject(Preview):
 
     @mainthread
     def make_thread_safe(self, found):
-        self.classified = found
+        if self.camera_connected:
+            self.classified = found
+        else:
+            # Clear local state so no thread related ghosts on re-connect
+            self.classified = []
 
     ################################
     # Canvas Update  - on UI Thread

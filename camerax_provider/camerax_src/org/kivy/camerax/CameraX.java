@@ -144,6 +144,10 @@ class CameraX {
 	}
     }
 
+    public String providerVersion() {
+	return "0.0.3";  // Tested in camera4kivy/preview_camerax.py
+    }
+
     //##############################
     //# Android CameraX
     //##############################
@@ -417,6 +421,20 @@ class CameraX {
 	    }
 	    this.imageCapture.setFlashMode(this.flashMode);
 	}
+        return mode;
+    }
+
+    public String torch(String mode) {
+	if (this.camera != null && this.camera.getCameraInfo().hasFlashUnit()) {
+	    if (mode.equals("on")) {
+		this.camera.getCameraControl().enableTorch(true);
+	    } else {
+		mode = "off";
+		this.camera.getCameraControl().enableTorch(false);
+	    }
+	} else {
+	    mode = "off";
+	}	
         return mode;
     }
 
