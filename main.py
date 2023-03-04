@@ -46,7 +46,8 @@ class MyApp(App):
         Clock.schedule_once(self.connect_camera)
 
     def connect_camera(self,dt):    
-        self.layout.detect.connect_camera(enable_analyze_pixels = True)
+        self.layout.detect.connect_camera(enable_analyze_pixels = True,
+                                          enable_video = False)
 
     def on_stop(self):
         self.layout.detect.disconnect_camera()
