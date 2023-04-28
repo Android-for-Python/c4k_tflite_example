@@ -1,0 +1,58 @@
+--- tflite-runtime/tensorflow/lite/tools/pip_package/build_pip_package_with_cmake.sh	2023-02-13 14:49:26.000000000 -1000
++++ build_pip_package_with_cmake.sh	2023-02-22 12:56:29.555916074 -1000
+@@ -29,8 +29,8 @@
+   export TENSORFLOW_TARGET="armhf"
+ fi
+ PYTHON_INCLUDE=$(${PYTHON} -c "from sysconfig import get_paths as gp; print(gp()['include'])")
+-PYBIND11_INCLUDE=$(${PYTHON} -c "import pybind11; print (pybind11.get_include())")
+-NUMPY_INCLUDE=$(${PYTHON} -c "import numpy; print (numpy.get_include())")
++# PYBIND11_INCLUDE=$(${PYTHON} -c "import pybind11; print (pybind11.get_include())")
++# NUMPY_INCLUDE=$(${PYTHON} -c "import numpy; print (numpy.get_include())")
+ export CROSSTOOL_PYTHON_INCLUDE_PATH=${PYTHON_INCLUDE}
+ 
+ # Fix container image for cross build.
+@@ -60,7 +60,7 @@
+    "${TENSORFLOW_LITE_DIR}/python/metrics/metrics_portable.py" \
+    "${BUILD_DIR}/tflite_runtime"
+ echo "__version__ = '${PACKAGE_VERSION}'" >> "${BUILD_DIR}/tflite_runtime/__init__.py"
+-echo "__git_version__ = '$(git -C "${TENSORFLOW_DIR}" describe)'" >> "${BUILD_DIR}/tflite_runtime/__init__.py"
++echo "__git_version__ = '${PACKAGE_VERSION}'" >> "${BUILD_DIR}/tflite_runtime/__init__.py"
+ 
+ # Build python interpreter_wrapper.
+ mkdir -p "${BUILD_DIR}/cmake_build"
+@@ -106,13 +106,25 @@
+       -DCMAKE_SYSTEM_PROCESSOR=aarch64 \
+       "${TENSORFLOW_LITE_DIR}"
+     ;;
++  android)
++    BUILD_FLAGS=${BUILD_FLAGS:-"${WRAPPER_INCLUDES}"}
++    cmake \
++      -DCMAKE_SYSTEM_NAME=Android \
++      -DANDROID_ARM_NEON=ON \
++      -DCMAKE_CXX_FLAGS="${BUILD_FLAGS}" \
++      -DCMAKE_SHARED_LINKER_FLAGS="${CMAKE_SHARED_LINKER_FLAGS}" \
++      -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
++      -DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
++      -DANDROID_ABI="${ANDROID_ABI}" \
++      "${TENSORFLOW_LITE_DIR}" 
++    ;;  
+   native)
+     BUILD_FLAGS=${BUILD_FLAGS:-"-march=native -I${PYTHON_INCLUDE} -I${PYBIND11_INCLUDE} -I${NUMPY_INCLUDE}"}
+     cmake \
+       -DCMAKE_C_FLAGS="${BUILD_FLAGS}" \
+       -DCMAKE_CXX_FLAGS="${BUILD_FLAGS}" \
+       "${TENSORFLOW_LITE_DIR}"
+-    ;;
++    ;;  
+   *)
+     BUILD_FLAGS=${BUILD_FLAGS:-"-I${PYTHON_INCLUDE} -I${PYBIND11_INCLUDE} -I${NUMPY_INCLUDE}"}
+     cmake \
+@@ -164,7 +176,7 @@
+       ${PYTHON} setup.py bdist --plat-name=${WHEEL_PLATFORM_NAME} \
+                          bdist_wheel --plat-name=${WHEEL_PLATFORM_NAME}
+     else
+-      ${PYTHON} setup.py bdist bdist_wheel
++      ${PYTHON} setup.py bdist
+     fi
+     ;;
+ esac
