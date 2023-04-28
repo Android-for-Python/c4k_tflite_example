@@ -17,22 +17,22 @@ The original Google example depends on numpy and opencv. This derived example re
 
 This Google example was chosen because it was trained on a complex dataset and thus slow to infer objects, and so is a test of any performance limitations. Detection update rates and detection confidence vary by platform, because platforms use different delegates. The NNAPI delegate, available on Android >= 11 seems to be the fastest.
 
-For this example platform performance is approximately:
+For this example platform performance is approximately (note with the excepton of arm7 list is a list of the highest version I have actually tried, not a list of what version is required):
 
 | Platform | tflite version | approx annotations per sec|
 |----------|----------------|-----------------------|
-| Windows i7 | 2.5.0.post1 | 0.7  |
+| Windows i7 | 2.12.0 | 9  |
 | Emulator x86 (Windows i7) | 2.8.0 | 1 |
 | Mac i5 | 2.5.0.post1 | 3  |
 | Nexus5 Android 6 arm7 | 2.8.0 | 5 |
 | Windows + Coral | 2.5.0.post1 | 7 |
-| Pixel5 Android 12 arm8 | 2.8.0 | 25 |
+| Pixel5 Android 12 arm8 | 2.12.0 | 27 |
 
 These are annotation update rates, for Camera4Kivy background image frame update rates are mostly independent of this. Surprisingly single digit annoatation rates provide acceptable behavior, this is because of the stochastic nature of detection. Conversly a high update rate appears too fast, tuning might be required.
 
-As of 2021/12/13 Google's `tflite_runtime.whl` (version 2.5.0.post1) is not available for any of these: Python 3.10, MacOS on M1, MacOS Monterey, iOS, or x86_32. **If you use any of these, stop now**. If you have a problem with this talk to Google.
+On the desktop we use the Python tensorflow package. On mobile devices the Python tflite-runtime package. 
 
-The example uses the recipe for `tflite-runtime` included in p4a. This uses tflite-runtime 2.8.0, and runs on arm7 and arm8 devices and the x86 (but not x86_64) emulator.
+The example uses the recipe for `tflite-runtime` included in p4a. This uses tflite-runtime 2.11.0, and runs on arm7 and arm8 devices and the x86 (but not x86_64) emulator.
 
 # Image Analysis Architecture
 
@@ -57,21 +57,11 @@ Tensorflow Image analysis has four distinct components:
 This example depends on [Camera4Kivy](https://github.com/Android-for-Python/Camera4Kivy#camera4kivy). Depending on the platform you may need to install a [camera provider](https://github.com/Android-for-Python/Camera4Kivy#camera-provider). 
 
 ## Windows, MacOS x86_64, Linux
-`pip3 install numpy camera4kivy`
-
-(The currently available version of tflite-runtime maybe different to the one used on the next line.)
-
-`pip3 install --index-url https://google-coral.github.io/py-repo/tflite-runtime==2.5.0.post1`
+`pip3 install numpy camera4kivy tensorflow`
 
 If you use a [Coral Accelerator](https://coral.ai/products/accelerator) set `enable_edgetpu = True` in `classifyobject.py`.
 
 ## Android
-
-Camera4Kivy depends on Buildozer 1.3.0 or later
-
-`pip3 install buildozer`
-
-The example includes a `buildozer.spec`, and `camerax_provider`. Python-for-Android includes a tflite-runtime recipe.
 
 The buildozer.spec has these characteristics:
 
@@ -79,9 +69,14 @@ The buildozer.spec has these characteristics:
 source.include_exts = ...,tflite
 source.exclude_patterns = object_detection/efficient*.tflite
 requirements = python3,kivy,camera4kivy,gestures4kivy,numpy,tflite-runtime
-android.api = 32
+android.api = 33
 android.arch = arm64-v8a
 p4a.hook = camerax_provider/gradle_options.py
+```
+
+Note: the p4a recipe uses tlflite 2.8.0, this has not been updated due to a Tensorflow issue on armeab-v7a devices [issue status](https://github.com/tensorflow/tensorflow/issues/59970). However it is possible to run 2.12.0 on other Android archectures, a recipe for 2.12.0 is included with this repository (but fails to build on armeab-v7a). To use, in buildozer.spec set:
+```
+p4a.local_recipes = tfl_2_12_not_arm7
 ```
 
 Note armeab-v7a: Some very old armeab-v7a devices may not have NEON instructions and will not work (the failure mechanism, if any, is unknown). Set `android.minapi = 23` to exclude these devices (and some devices that do have NEON instructions as well).
