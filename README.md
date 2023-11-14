@@ -3,6 +3,8 @@ Camera4Kivy Tensoflow Lite Example
 
 *Tensorflow Lite Image Analysis using Camera4Kivy*
 
+**2023-11-13 This repository is archived.**
+
 # Overview
 
 Uses Tensoflow Lite to classify objects in the image stream, classified objects are boxed and labeled in the Preview. 
